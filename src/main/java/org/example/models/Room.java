@@ -1,7 +1,12 @@
 package org.example.models;
 
+/**
+ * Represents a room with a unique name and number.
+ */
 public class Room {
+    //Room Number from map
     private int roomNumber;
+    //Room Name from map
     private String roomName;
 
     public Room(int roomNumber, String roomName) {

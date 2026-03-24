@@ -1,8 +1,26 @@
 package org.example.models;
 
+/**
+ * Represents an edge in a graph connecting to {@link Room} objects.
+ *
+ * <p>An Edge contains:
+ * <ul>Source Room</ul>
+ * <ul>Destination Room</ul>
+ * <ul>Distance between the two rooms measured in pixels.</ul>
+ * </p>
+ */
 public class Edge {
+    /**
+     * Starting Room of the edge.
+     */
     private Room source;
+    /**
+     * End Room of the edge.
+     */
     private Room destination;
+    /**
+     * Distance between the two rooms, measured in pixels.
+     */
     private int pixelDistance;
 
     public Edge(Room source, Room destination, int pixelDistance) {
