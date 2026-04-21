@@ -16,9 +16,9 @@ class GraphNodeALTest {
 
          node1.connectToNodeDirected(node2,100);
 
-         assertEquals(1, node1.adjList.size());
-         assertEquals(node2, node1.adjList.getFirst());
-         assertEquals(100, node1.distance.getFirst());
+         assertEquals(1, node1.getAdjList() .size());
+         assertEquals(node2, node1.getAdjList().getFirst());
+         assertEquals(100, node1.getDistance().getFirst());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,12 +28,12 @@ class GraphNodeALTest {
 
         node2.connectToNodeUndirected(node1,100);
 
-        assertEquals(1, node2.adjList.size());
-        assertEquals(node1, node2.adjList.getFirst());
-        assertEquals(100, node2.distance.getFirst());
+        assertEquals(1, node2.getAdjList().size());
+        assertEquals(node1, node2.getAdjList().getFirst());
+        assertEquals(100, node2.getDistance().getFirst());
 
-        assertEquals(1, node1.adjList.size());
-        assertEquals(node2, node1.adjList.getFirst());
-        assertEquals(100, node1.distance.getFirst());
+        assertEquals(1, node1.getAdjList().size());
+        assertEquals(node2, node1.getAdjList().getFirst());
+        assertEquals(100, node1.getDistance().getFirst());
     }
 }

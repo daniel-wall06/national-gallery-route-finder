@@ -8,13 +8,13 @@ import java.util.List;
  * @param <T> - data stored in the node.
  */
 public class GraphNodeAL<T> {
-    public T data;
+    private T data;
     //List of connected nodes
-    public List<GraphNodeAL<T>> adjList = new ArrayList<GraphNodeAL<T>>();
+    private List<GraphNodeAL<T>> adjList = new ArrayList<GraphNodeAL<T>>();
     //List of edge weights to the corresponding node.
-    public List<Integer> distance = new ArrayList<>();
+    private List<Integer> distance = new ArrayList<>();
     //Flag to mark node when traversing the graph.
-    public boolean visited = false;
+    private boolean visited = false;
 
     public GraphNodeAL(T data) {
         this.data = data;
@@ -40,6 +40,30 @@ public class GraphNodeAL<T> {
         this.distance.add(distance);
         destNode.adjList.add(this);
         destNode.distance.add(distance);
+    }
+    public void setData(T data) {
+        this.data = data;
+    }
+    public T getData() {
+        return data;
+    }
+    public List<GraphNodeAL<T>> getAdjList() {
+        return adjList;
+    }
+    public List<Integer> getDistance() {
+        return distance;
+    }
+    public boolean isVisited() {
+        return visited;
+    }
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+    public void setDistance(List<Integer> distance) {
+        this.distance = distance;
+    }
+    public void setAdjList(List<GraphNodeAL<T>> adjList) {
+        this.adjList = adjList;
     }
 
 
