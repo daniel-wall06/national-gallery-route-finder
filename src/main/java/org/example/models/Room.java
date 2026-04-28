@@ -40,5 +40,9 @@ public class Room {
     public void setArtworks(List<Artwork> artworks) {
         this.artworks = artworks;
     }
+    @Override
+    public String toString() {
+        return "Room " + roomNumber + " - " + roomName;
+    }
 
 }
