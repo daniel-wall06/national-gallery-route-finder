@@ -1,5 +1,6 @@
 package org.example.graph;
 
+import org.example.models.Artwork;
 import org.example.models.Room;
 import org.junit.jupiter.api.Test;
 
@@ -97,5 +98,37 @@ class GraphALTest {
         List<Room> route = graphAL.findShortestRouteDijkstra(1, 2);
         System.out.println(route);
         assertNull(route);
+    }
+
+    @Test
+    void mostInterestingRoute(){
+        GraphAL graphAL = new GraphAL();
+        graphAL.addRoom(new Room(1, "Room 1"));
+        Room room2 = new Room(2, "Room 2");
+        room2.addArtwork(new Artwork("Sunflowers", "Van Gogh"));
+        graphAL.addRoom(room2);
+        graphAL.addRoom(new Room(3, "Room 3"));
+        graphAL.addRoom(new Room(4, "Room 4"));
+        graphAL.addRoom(new Room(5, "Room 5"));
+        graphAL.addRoom(new Room(6, "Room 6"));
+
+        graphAL.connectRooms(1,2,100);
+        graphAL.connectRooms(2,3,100);
+        graphAL.connectRooms(3,4,100);
+        graphAL.connectRooms(1,4,300);
+
+
+
+        List<Room> route = graphAL.findMostInterestingRoute(1, 4, List.of("Van Gogh"));
+        for(Room room : route) {
+            System.out.println(room);
+        }
+        assertNotNull(route);
+        assertTrue(route.contains(room2));
+
+
+
+
+
     }
 }

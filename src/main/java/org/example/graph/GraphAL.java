@@ -129,4 +129,68 @@ public class GraphAL {
 
         return null;
     }
+
+    /**
+     * Finds the most interesting route between rooms using Dijkstra's algorithm
+     * Rooms that contain artwork by an artist in the provided list are given a discount to the distance
+     * @param startRoom starting room number
+     * @param destRoom destination room number
+     * @param artists list of artists the visitor is interested in
+     * @return list of rooms on the most interesting route, or null if no path found
+     */
+    public List<Room> findMostInterestingRoute(int startRoom, int destRoom, List<String> artists) {
+        GraphNodeAL<Room> startNode = nodes.get(startRoom);
+        GraphNodeAL<Room> destNode = nodes.get(destRoom);
+        if(startNode == null || destNode == null) return null;
+        List<GraphNodeAL<Room>> encountered = new ArrayList<>();
+        List<GraphNodeAL<Room>> unencountered = new ArrayList<>();
+        Map<GraphNodeAL<Room>, Integer> distances = new HashMap<>();
+        Map<GraphNodeAL<Room>, GraphNodeAL<Room>> prev = new HashMap<>();
+        for(GraphNodeAL<Room> node : nodes.values()) {
+            distances.put(node, Integer.MAX_VALUE);
+        }
+        distances.put(startNode, 0);
+        unencountered.add(startNode);
+        GraphNodeAL<Room> currentNode = startNode;
+        do{
+            currentNode = unencountered.remove(0);
+            encountered.add(currentNode);
+            if(currentNode.getData().equals(destNode.getData())){
+                List<Room> path = new ArrayList<>();
+                GraphNodeAL<Room> traceNode = destNode;
+                while(traceNode != null) {
+                    path.add(0, traceNode.getData());
+                    traceNode = prev.get(traceNode);
+                }
+                return path;
+
+            }
+            for(int i = 0; i < currentNode.getAdjList().size(); i++) {
+                GraphNodeAL<Room> neighbour = currentNode.getAdjList().get(i);
+                if(!encountered.contains(neighbour)) {
+                    int newDist = distances.get(currentNode) + currentNode.getDistance().get(i);
+                    for(String artist : artists){
+                        if(neighbour.getData().hasArtistWork(artist)) {
+                            newDist -= 50;
+                            break;
+
+                        }
+                    }
+                    newDist = Math.max(1, newDist);
+
+                    if(newDist < distances.get(neighbour)) {
+                        distances.put(neighbour, newDist);
+                        prev.put(neighbour, currentNode);
+                    }
+                    if(!unencountered.contains(neighbour)) {
+                        unencountered.add(neighbour);
+                    }
+                }
+            }
+            unencountered.sort(Comparator.comparingInt(distances::get));
+        } while(!unencountered.isEmpty());
+
+        return null;
+
+    }
 }
