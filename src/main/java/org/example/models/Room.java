@@ -45,4 +45,13 @@ public class Room {
         return "Room " + roomNumber + " - " + roomName;
     }
 
+    public boolean hasArtistWork(String artist) {
+        for(Artwork a : artworks) {
+            if(a.getArtist().equalsIgnoreCase(artist)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
