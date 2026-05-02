@@ -23,7 +23,7 @@ class GraphALTest {
         GraphAL graphAL = new GraphAL();
         graphAL.addRoom(new Room(1, "Room 1"));
         graphAL.addRoom(new Room(2, "Room 2"));
-        graphAL.connectRooms(1,2,100);
+        graphAL.connectRooms(1, 2, 100);
         GraphNodeAL<Room> node = graphAL.getNode(1);
         assertFalse(node.getAdjList().isEmpty());
 
@@ -36,11 +36,11 @@ class GraphALTest {
         graphAL.addRoom(new Room(2, "Room 2"));
         graphAL.addRoom(new Room(3, "Room 3"));
         graphAL.addRoom(new Room(4, "Room 4"));
-        graphAL.connectRooms(1,2,100);
-        graphAL.connectRooms(2,3,100);
-        graphAL.connectRooms(3,4,100);
-        graphAL.connectRooms(1,4,150);
-        graphAL.connectRooms(2,4,150);
+        graphAL.connectRooms(1, 2, 100);
+        graphAL.connectRooms(2, 3, 100);
+        graphAL.connectRooms(3, 4, 100);
+        graphAL.connectRooms(1, 4, 150);
+        graphAL.connectRooms(2, 4, 150);
 
         List<List<Room>> routes = graphAL.findRoutesDFS(1, 4, 3);
         System.out.println("--- All Possible Routes ---");
@@ -51,6 +51,7 @@ class GraphALTest {
         assertFalse(routes.isEmpty());
 
     }
+
     @Test
     void findRouteDijkstra() {
         GraphAL graphAL = new GraphAL();
@@ -58,13 +59,13 @@ class GraphALTest {
         graphAL.addRoom(new Room(2, "Room 2"));
         graphAL.addRoom(new Room(3, "Room 3"));
         graphAL.addRoom(new Room(4, "Room 4"));
-        graphAL.connectRooms(1,2,100);
-        graphAL.connectRooms(2,3,100);
-        graphAL.connectRooms(3,4,100);
-        graphAL.connectRooms(1,4,150);
-        graphAL.connectRooms(2,4,150);
-        graphAL.connectRooms(3,4,150);
-        graphAL.connectRooms(1,4,150);
+        graphAL.connectRooms(1, 2, 100);
+        graphAL.connectRooms(2, 3, 100);
+        graphAL.connectRooms(3, 4, 100);
+        graphAL.connectRooms(1, 4, 150);
+        graphAL.connectRooms(2, 4, 150);
+        graphAL.connectRooms(3, 4, 150);
+        graphAL.connectRooms(1, 4, 150);
 
         List<Room> route = graphAL.findShortestRouteDijkstra(1, 4);
         System.out.println(route);
@@ -72,6 +73,7 @@ class GraphALTest {
         assertEquals(2, route.size());
 
     }
+
     @Test
     void nullDijkstra() {
         GraphAL graphAL = new GraphAL();
@@ -81,8 +83,9 @@ class GraphALTest {
         System.out.println(route);
         assertNull(route);
     }
+
     @Test
-    void dijkstraStartDest(){
+    void dijkstraStartDest() {
         GraphAL graphAL = new GraphAL();
         graphAL.addRoom(new Room(1, "Room 1"));
 
@@ -90,8 +93,9 @@ class GraphALTest {
         System.out.println(route);
         assertNotNull(route);
     }
+
     @Test
-    void dijkstraRoomDoesntExist(){
+    void dijkstraRoomDoesntExist() {
         GraphAL graphAL = new GraphAL();
         graphAL.addRoom(new Room(1, "Room 1"));
 
@@ -101,7 +105,7 @@ class GraphALTest {
     }
 
     @Test
-    void mostInterestingRoute(){
+    void mostInterestingRoute() {
         GraphAL graphAL = new GraphAL();
         graphAL.addRoom(new Room(1, "Room 1"));
         Room room2 = new Room(2, "Room 2");
@@ -112,23 +116,36 @@ class GraphALTest {
         graphAL.addRoom(new Room(5, "Room 5"));
         graphAL.addRoom(new Room(6, "Room 6"));
 
-        graphAL.connectRooms(1,2,100);
-        graphAL.connectRooms(2,3,100);
-        graphAL.connectRooms(3,4,100);
-        graphAL.connectRooms(1,4,300);
-
+        graphAL.connectRooms(1, 2, 100);
+        graphAL.connectRooms(2, 3, 100);
+        graphAL.connectRooms(3, 4, 100);
+        graphAL.connectRooms(1, 4, 300);
 
 
         List<Room> route = graphAL.findMostInterestingRoute(1, 4, List.of("Van Gogh"));
-        for(Room room : route) {
+        for (Room room : route) {
             System.out.println(room);
         }
         assertNotNull(route);
         assertTrue(route.contains(room2));
 
+    }
 
+    @Test
+    void findShortestRouteWithWaypoints() {
+        GraphAL graphAL = new GraphAL();
+        graphAL.addRoom(new Room(1, "Room 1"));
+        graphAL.addRoom(new Room(2, "Room 2"));
+        graphAL.addRoom(new Room(3, "Room 3"));
+        graphAL.addRoom(new Room(4, "Room 4"));
+        graphAL.connectRooms(1, 2, 100);
+        graphAL.connectRooms(2, 3, 100);
+        graphAL.connectRooms(3, 4, 100);
+        graphAL.connectRooms(1, 4, 50);
 
-
-
+        List<Room> route = graphAL.findShortestRouteWithWaypoints(1, 4, List.of(2));
+        System.out.println(route);
+        assertNotNull(route);
+        assertTrue(route.contains(graphAL.getNode(2).getData()));
     }
 }
