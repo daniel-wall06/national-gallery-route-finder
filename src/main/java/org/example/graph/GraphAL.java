@@ -43,17 +43,17 @@ public class GraphAL {
      * @param maxRoutes maximum number of routes to return
      * @return list of routes, each route being a list of rooms
      */
-    public List<List<Room>> findRoutesDFS(int startRoom, int destRoom, int maxRoutes) {
+    public List<List<Room>> findRoutesDFS(int startRoom, int destRoom, int maxRoutes, List<Integer> avoidRooms) {
         GraphNodeAL<Room> startNode = nodes.get(startRoom);
         GraphNodeAL<Room> destNode = nodes.get(destRoom);
         List<List<Room>> routes = new ArrayList<>();
         List<Room> currentRoute = new ArrayList<>();
         if(startNode == null || destNode == null) return routes;
         currentRoute.add(startNode.getData());
-        dfsHelper(startNode, destNode, currentRoute, routes, maxRoutes);
+        dfsHelper(startNode, destNode, currentRoute, routes, maxRoutes, avoidRooms);
         return routes;
     }
-    private void dfsHelper(GraphNodeAL<Room> current, GraphNodeAL<Room> destination, List<Room> currentRoute, List<List<Room>> routes, int maxRoutes) {
+    private void dfsHelper(GraphNodeAL<Room> current, GraphNodeAL<Room> destination, List<Room> currentRoute, List<List<Room>> routes, int maxRoutes, List<Integer> avoidRooms){
         if(routes.size() >= maxRoutes) return;
         if(current.equals(destination)){
             routes.add(new ArrayList<>(currentRoute));
@@ -61,9 +61,9 @@ public class GraphAL {
         }
         current.setVisited(true);
         for(GraphNodeAL<Room> neighbour : current.getAdjList()) {
-            if(!neighbour.isVisited()){
+            if(!neighbour.isVisited() && !avoidRooms.contains(neighbour.getData().getRoomNumber())) {
                 currentRoute.add(neighbour.getData());
-                dfsHelper(neighbour, destination, currentRoute, routes, maxRoutes);
+                dfsHelper(neighbour, destination, currentRoute, routes, maxRoutes, avoidRooms);
                 currentRoute.remove(currentRoute.size() - 1);
             }
         }

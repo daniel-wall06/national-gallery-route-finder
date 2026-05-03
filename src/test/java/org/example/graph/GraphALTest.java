@@ -43,7 +43,7 @@ class GraphALTest {
         graphAL.connectRooms(1, 4, 150);
         graphAL.connectRooms(2, 4, 150);
 
-        List<List<Room>> routes = graphAL.findRoutesDFS(1, 4, 3);
+        List<List<Room>> routes = graphAL.findRoutesDFS(1, 4, 3, new ArrayList<>());
         System.out.println("--- All Possible Routes ---");
         for (List<Room> path : routes) {
             System.out.println(path);
@@ -169,5 +169,27 @@ class GraphALTest {
         System.out.println(route);
         assertNotNull(route);
         assertFalse(route.contains(graphAL.getNode(2).getData()));
+    }
+    @Test
+    void findRouteDFSAvoidRooms() {
+        GraphAL graphAL = new GraphAL();
+        graphAL.addRoom(new Room(1, "Room 1"));
+        graphAL.addRoom(new Room(2, "Room 2"));
+        graphAL.addRoom(new Room(3, "Room 3"));
+        graphAL.addRoom(new Room(4, "Room 4"));
+        graphAL.addRoom(new Room(5, "Room 5"));
+
+        graphAL.connectRooms(1, 2, 100);
+        graphAL.connectRooms(2, 3, 100);
+        graphAL.connectRooms(3, 4, 100);
+        graphAL.connectRooms(4,5,100);
+        graphAL.connectRooms(1, 3, 150);
+
+        List<List<Room>> route = graphAL.findRoutesDFS(1, 5,4,  List.of(2));
+        System.out.println(route);
+        assertNotNull(route);
+        for(List<Room> r : route) {
+            assertFalse(r.contains(graphAL.getNode(2).getData()));
+        }
     }
 }
