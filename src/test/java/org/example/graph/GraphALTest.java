@@ -192,4 +192,21 @@ class GraphALTest {
             assertFalse(r.contains(graphAL.getNode(2).getData()));
         }
     }
+    @Test
+    void findDFSRouteWithWaypoints() {
+        GraphAL graphAL = new GraphAL();
+        graphAL.addRoom(new Room(1, "Room 1"));
+        graphAL.addRoom(new Room(2, "Room 2"));
+        graphAL.addRoom(new Room(3, "Room 3"));
+        graphAL.addRoom(new Room(4, "Room 4"));
+        graphAL.connectRooms(1, 2, 100);
+        graphAL.connectRooms(2, 3, 100);
+        graphAL.connectRooms(3, 4, 100);
+        graphAL.connectRooms(1, 4, 50);
+
+        List<List<Room>> route = graphAL.findRoutesDFSWithWaypoints(1, 4,4,  List.of(2), new ArrayList<>());
+        System.out.println(route);
+        assertNotNull(route);
+        assertTrue(route.get(0).contains(graphAL.getNode(2).getData()));
+    }
 }
