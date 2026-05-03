@@ -77,7 +77,7 @@ public class GraphAL {
      *
      * @return a list containing the shortest route found by the algorithm.
      */
-    public List<Room> findShortestRouteDijkstra(int startRoom, int destRoom) {
+    public List<Room> findShortestRouteDijkstra(int startRoom, int destRoom, List<Integer> avoidRooms) {
         GraphNodeAL<Room> startNode = nodes.get(startRoom);
         GraphNodeAL<Room> destNode = nodes.get(destRoom);
         if(startNode == null || destNode == null) return null;
@@ -114,7 +114,7 @@ public class GraphAL {
             }
             for(int i = 0; i < currentNode.getAdjList().size(); i++) {
                 GraphNodeAL<Room> neighbour = currentNode.getAdjList().get(i);
-                if(!encountered.contains(neighbour)) {
+                if(!encountered.contains(neighbour) && !avoidRooms.contains(neighbour.getData().getRoomNumber())) {
                     int newDist = distances.get(currentNode) + currentNode.getDistance().get(i);
                     if(newDist < distances.get(neighbour)) {
                         distances.put(neighbour, newDist);
@@ -202,7 +202,7 @@ public class GraphAL {
 
         List<Room> fullRoute = new ArrayList<>();
         for(int i = 0; i < sequence.size() - 1; i++) {
-            List<Room> segment = findShortestRouteDijkstra(sequence.get(i), sequence.get(i + 1));
+            List<Room> segment = findShortestRouteDijkstra(sequence.get(i), sequence.get(i + 1), new ArrayList<>());
             if(i == 0) {
                 fullRoute.addAll(segment);
             } else {
