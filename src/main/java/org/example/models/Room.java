@@ -42,7 +42,7 @@ public class Room {
     }
     @Override
     public String toString() {
-        return "Room " + roomNumber + " - " + roomName;
+        return roomName;
     }
 
     public boolean hasArtistWork(String artist) {

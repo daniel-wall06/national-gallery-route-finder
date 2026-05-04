@@ -40,6 +40,10 @@ public class GraphAL {
         return nodes.get(roomNumber);
     }
 
+    public Collection<GraphNodeAL<Room>> getAllNodes() {
+        return nodes.values();
+    }
+
     /**
      * Finds multiple routes between two rooms using depth-first search.
      *
@@ -145,7 +149,7 @@ public class GraphAL {
      * @param artists   list of artists the visitor is interested in
      * @return list of rooms on the most interesting route, or null if no path found
      */
-    public List<Room> findMostInterestingRoute(int startRoom, int destRoom, List<String> artists) {
+    public List<Room> findMostInterestingRoute(int startRoom, int destRoom, List<String> artists, List<Integer> avoidRooms) {
         GraphNodeAL<Room> startNode = nodes.get(startRoom);
         GraphNodeAL<Room> destNode = nodes.get(destRoom);
         if (startNode == null || destNode == null) return null;
@@ -174,7 +178,7 @@ public class GraphAL {
             }
             for (int i = 0; i < currentNode.getAdjList().size(); i++) {
                 GraphNodeAL<Room> neighbour = currentNode.getAdjList().get(i);
-                if (!encountered.contains(neighbour)) {
+                if(!encountered.contains(neighbour) && !avoidRooms.contains(neighbour.getData().getRoomNumber())) {
                     int newDist = distances.get(currentNode) + currentNode.getDistance().get(i);
                     for (String artist : artists) {
                         if (neighbour.getData().hasArtistWork(artist)) {

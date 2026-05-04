@@ -20,12 +20,12 @@ public class GalleryDataLoader {
     public GraphAL load() {
         GraphAL graph = new GraphAL();
         try {
-            InputStream is = getClass().getResourceAsStream("/org/example/data/rooms.csv");
+            InputStream is = GalleryDataLoader.class.getModule().getResourceAsStream("org/example/data/rooms.csv");
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.startsWith("#") || line.trim().isEmpty()) continue;
-                String[] parts = line.split(",");
+                String[] parts = line.split(",", 2);
                 int roomNum = Integer.parseInt(parts[0]);
                 String roomname = parts[1];
                 graph.addRoom(new Room(roomNum, roomname));
@@ -34,7 +34,7 @@ public class GalleryDataLoader {
             e.printStackTrace();
         }
         try {
-            InputStream is = getClass().getResourceAsStream("/org/example/data/connections.csv");
+            InputStream is = GalleryDataLoader.class.getModule().getResourceAsStream("org/example/data/connections.csv");
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = br.readLine()) != null) {
@@ -49,7 +49,7 @@ public class GalleryDataLoader {
             e.printStackTrace();
         }
         try {
-            InputStream is = getClass().getResourceAsStream("/org/example/data/artworks.csv");
+            InputStream is = GalleryDataLoader.class.getModule().getResourceAsStream("org/example/data/artworks.csv");
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = br.readLine()) != null) {

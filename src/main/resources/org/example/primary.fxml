@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.canvas.*?>
 <?import javafx.geometry.Insets?>
-
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.PrimaryController">
-   <children>
-      <Label text="Primary View" />
-      <Button fx:id="primaryButton" text="Switch to Secondary View" onAction="#switchToSecondary"/>
-   </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-</VBox>
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controllers.MainController">
+   <center>
+      <StackPane fx:id="mapPane">
+         <ImageView fx:id="mapImageView" preserveRatio="true"/>
+         <Canvas fx:id="mapCanvas" width="700" height="500"/>
+      </StackPane>
+   </center>
+   <right>
+      <VBox spacing="10" style="-fx-padding: 10;">
+         <Label text="Start Room:"/>
+         <ComboBox fx:id="startRoomCombo" maxWidth="Infinity"/>
+         <Label text="Destination Room:"/>
+         <ComboBox fx:id="destRoomCombo" maxWidth="Infinity"/>
+         <Label text="Max Routes:"/>
+         <TextField fx:id="maxRoutesField" promptText="e.g. 5"/>
+         <Label text="Interested Artists:"/>
+         <TextField fx:id="artistsField" promptText="e.g. Vermeer, Monet"/>
+         <Label text="Rooms to Avoid:"/>
+         <TextField fx:id="avoidRoomsField" promptText="e.g. 5, 10, 15"/>
+         <Label text="Algorithms:"/>
+         <Button fx:id="dfsButton" text="Find Multiple Routes (DFS)" maxWidth="Infinity" onAction="#runDFS"/>
+         <Button fx:id="dijkstraButton" text="Shortest Route (Dijkstra)" maxWidth="Infinity" onAction="#runDijkstra"/>
+         <Button fx:id="interestingButton" text="Most Interesting Route" maxWidth="Infinity" onAction="#runInteresting"/>
+         <Button fx:id="bfsButton" text="BFS Pixel Search" maxWidth="Infinity" onAction="#runBFS"/>
+         <Label text="Results:"/>
+         <TextArea fx:id="resultsArea" prefHeight="200" editable="false" wrapText="true"/>
+      </VBox>
+   </right>
+</BorderPane>
