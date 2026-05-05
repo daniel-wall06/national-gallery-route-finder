@@ -29,7 +29,7 @@
          <Button fx:id="dfsButton" text="Find Multiple Routes (DFS)" maxWidth="Infinity" onAction="#runDFS"/>
          <Button fx:id="dijkstraButton" text="Shortest Route (Dijkstra)" maxWidth="Infinity" onAction="#runDijkstra"/>
          <Button fx:id="interestingButton" text="Most Interesting Route" maxWidth="Infinity" onAction="#runInteresting"/>
-         <Button fx:id="bfsButton" text="BFS Pixel Search" maxWidth="Infinity" onAction="#runBFS"/>
+         <Button fx:id="bfsButton" text="BFS Pixel Search" maxWidth="Infinity" onAction="#runBFSPixel"/>
          <Label text="Results:"/>
          <TextArea fx:id="resultsArea" prefHeight="200" editable="false" wrapText="true"/>
       </VBox>
