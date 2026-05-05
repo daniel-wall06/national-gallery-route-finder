@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import org.example.data.GalleryDataLoader;
 import org.example.graph.GraphAL;
 import org.example.graph.GraphNodeAL;
+import org.example.graph.PixelBFS;
 import org.example.models.Room;
 
 import  javafx.scene.image.ImageView;
@@ -41,6 +42,9 @@ public class MainController {
 
     private GraphAL graph;
     private Map<Integer, double[]> roomCoordinates = new HashMap<>();
+    private int[] bfsStart = null;
+    private int[] bfsEnd = null;
+    private Image bwImage;
 
     @FXML
     public void initialize() throws IOException {
@@ -84,6 +88,23 @@ public class MainController {
         System.out.println("Canvas size: " + mapCanvas.getWidth() + "x" + mapCanvas.getHeight());
         mapCanvas.setOnMouseClicked(e -> {
             System.out.println("x: " + e.getX() + ", y: " + e.getY());
+        });
+        bwImage = new Image(GalleryDataLoader.class.getModule().getResourceAsStream("org/example/images/mapBW.png"));
+        mapCanvas.setOnMouseClicked(e -> {
+            double scaleX = bwImage.getWidth() / mapCanvas.getWidth();
+            double scaleY = bwImage.getHeight() / mapCanvas.getHeight();
+            int scaledX = (int)(e.getX() * scaleX);
+            int scaledY = (int)(e.getY() * scaleY);
+
+            if (bfsStart == null) {
+                bfsStart = new int[]{scaledX, scaledY};
+                resultsArea.setText("Start point set. Click destination.");
+            } else {
+                bfsEnd = new int[]{scaledX, scaledY};
+                runBFSPixel();
+                bfsStart = null;
+                bfsEnd = null;
+            }
         });
     }
 
@@ -198,7 +219,30 @@ public class MainController {
 
     }
     @FXML
-    private void runBFS() {
+    private void runBFSPixel() {
+        List<int[]> path = PixelBFS.findPath(bwImage, bfsStart[0], bfsStart[1], bfsEnd[0], bfsEnd[1]);
+
+        if (path.isEmpty()) {
+            resultsArea.setText("No path found.");
+            return;
+        }
+
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(2);
+
+        double scaleX = mapCanvas.getWidth() / bwImage.getWidth();
+        double scaleY = mapCanvas.getHeight() / bwImage.getHeight();
+
+        for (int i = 0; i < path.size() - 1; i++) {
+            gc.strokeLine(
+                    path.get(i)[0] * scaleX, path.get(i)[1] * scaleY,
+                    path.get(i+1)[0] * scaleX, path.get(i+1)[1] * scaleY
+            );
+        }
+
+        resultsArea.setText("BFS path found! Distance: " + path.size() + " pixels.");
     }
     private void initRoomCoordinates() {
         roomCoordinates.put(1, new double[]{401.0, 374.5});
