@@ -206,6 +206,9 @@ public class GraphAL {
     }
 
     public List<Room> findShortestRouteWithWaypoints(int startRoom, int destRoom, List<Integer> waypoints) {
+        if (waypoints == null || waypoints.isEmpty()) {
+            return findShortestRouteDijkstra(startRoom, destRoom, new ArrayList<>());
+        }
         List<Integer> sequence = new ArrayList<>();
         sequence.add(startRoom);
         sequence.addAll(waypoints);
@@ -214,6 +217,7 @@ public class GraphAL {
         List<Room> fullRoute = new ArrayList<>();
         for (int i = 0; i < sequence.size() - 1; i++) {
             List<Room> segment = findShortestRouteDijkstra(sequence.get(i), sequence.get(i + 1), new ArrayList<>());
+            if (segment == null) return new ArrayList<>();
             if (i == 0) {
                 fullRoute.addAll(segment);
             } else {

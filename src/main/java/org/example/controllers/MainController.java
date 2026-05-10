@@ -12,6 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import org.example.data.GalleryDataLoader;
 import org.example.graph.GraphAL;
 import org.example.graph.GraphNodeAL;
+import org.example.graph.PixelBFS;
 import org.example.models.Room;
 
 import  javafx.scene.image.ImageView;
@@ -39,11 +40,14 @@ public class MainController {
     private ImageView mapImageView;
     @FXML
     private Canvas mapCanvas;
+    @FXML
+    private TextField waypointsField;
 
     private GraphAL graph;
     private Map<Integer, double[]> roomCoordinates = new HashMap<>();
     private int[] bfsStart = null;
     private int[] bfsEnd = null;
+    private Image bwImage;
 
     @FXML
     public void initialize() throws IOException {
@@ -88,6 +92,24 @@ public class MainController {
         mapCanvas.setOnMouseClicked(e -> {
             System.out.println("x: " + e.getX() + ", y: " + e.getY());
         });
+        bwImage = new Image(GalleryDataLoader.class.getModule().getResourceAsStream("org/example/images/mapBW.png"));
+
+        mapCanvas.setOnMouseClicked(e -> {
+            double scaleX = bwImage.getWidth() / mapCanvas.getWidth();
+            double scaleY = bwImage.getHeight() / mapCanvas.getHeight();
+            int scaledX = (int)(e.getX() * scaleX);
+            int scaledY = (int)(e.getY() * scaleY);
+
+            if (bfsStart == null) {
+                bfsStart = new int[]{scaledX, scaledY};
+                resultsArea.setText("Start point set. Click destination.");
+            } else {
+                bfsEnd = new int[]{scaledX, scaledY};
+                runBFSPixel();
+                bfsStart = null;
+                bfsEnd = null;
+            }
+        });
     }
 
     @FXML
@@ -105,13 +127,29 @@ public class MainController {
                 avoidRooms.add(Integer.parseInt(s.trim()));
             }
         }
+        List<Integer> waypoints = new ArrayList<>();
+        if (!waypointsField.getText().isEmpty()) {
+            for (String s : waypointsField.getText().split(",")) {
+                waypoints.add(Integer.parseInt(s.trim()));
+            }
+        }
 
-        List<Room> route = graph.findShortestRouteDijkstra(
-                startRoom.getRoomNumber(),
-                destRoom.getRoomNumber(),
-                avoidRooms
-        );
-        if (route == null) {
+        List<Room> route;
+        if (waypoints.isEmpty()) {
+            route = graph.findShortestRouteDijkstra(
+                    startRoom.getRoomNumber(),
+                    destRoom.getRoomNumber(),
+                    avoidRooms
+            );
+        } else {
+            route = graph.findShortestRouteWithWaypoints(
+                    startRoom.getRoomNumber(),
+                    destRoom.getRoomNumber(),
+                    waypoints
+            );
+        }
+
+        if (route == null || route.isEmpty()) {
             resultsArea.setText("No route found.");
         } else {
             StringBuilder sb = new StringBuilder("Shortest Route:\n");
@@ -140,12 +178,30 @@ public class MainController {
         int maxRoutes = 5; // default
         if (!maxRoutesField.getText().isEmpty()) {
             maxRoutes = Integer.parseInt(maxRoutesField.getText().trim());
-            List<List<Room>> routes = graph.findRoutesDFS(
-                    startRoom.getRoomNumber(),
-                    destRoom.getRoomNumber(),
-                    maxRoutes,
-                    avoidRooms
-            );
+            List<Integer> waypoints = new ArrayList<>();
+            if (!waypointsField.getText().isEmpty()) {
+                for (String s : waypointsField.getText().split(",")) {
+                    waypoints.add(Integer.parseInt(s.trim()));
+                }
+            }
+
+            List<List<Room>> routes;
+            if (waypoints.isEmpty()) {
+                routes = graph.findRoutesDFS(
+                        startRoom.getRoomNumber(),
+                        destRoom.getRoomNumber(),
+                        maxRoutes,
+                        avoidRooms
+                );
+            } else {
+                routes = graph.findRoutesDFSWithWaypoints(
+                        startRoom.getRoomNumber(),
+                        destRoom.getRoomNumber(),
+                        maxRoutes,
+                        waypoints,
+                        avoidRooms
+                );
+            }
 
             if (routes.isEmpty()) {
                 resultsArea.setText("No routes found.");
@@ -202,6 +258,9 @@ public class MainController {
     }
     @FXML
     private void runBFS() {
+        bfsStart = null;
+        bfsEnd = null;
+        resultsArea.setText("BFS mode: Click a start point on the map, then a destination point.");
     }
     private void initRoomCoordinates() {
         roomCoordinates.put(1, new double[]{397.0, 371.0});
@@ -304,5 +363,29 @@ public class MainController {
         gc.clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
         bfsStart = null;
         bfsEnd = null;
+    }
+    private void runBFSPixel() {
+        List<int[]> path = PixelBFS.findPath(bwImage, bfsStart[0], bfsStart[1], bfsEnd[0], bfsEnd[1]);
+
+        if (path.isEmpty()) {
+            resultsArea.setText("No path found.");
+            return;
+        }
+
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(2);
+
+        double scaleX = mapCanvas.getWidth() / bwImage.getWidth();
+        double scaleY = mapCanvas.getHeight() / bwImage.getHeight();
+
+        for (int i = 0; i < path.size() - 1; i++) {
+            gc.strokeLine(
+                    path.get(i)[0] * scaleX, path.get(i)[1] * scaleY,
+                    path.get(i+1)[0] * scaleX, path.get(i+1)[1] * scaleY
+            );
+        }
+        resultsArea.setText("BFS path found! Distance: " + path.size() + " pixels.");
     }
 }
