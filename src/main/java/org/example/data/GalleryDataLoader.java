@@ -24,11 +24,18 @@ public class GalleryDataLoader {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.startsWith("#") || line.trim().isEmpty()) continue;
-                String[] parts = line.split(",", 2);
-                int roomNum = Integer.parseInt(parts[0]);
-                String roomname = parts[1];
-                graph.addRoom(new Room(roomNum, roomname));
+                if (line.startsWith("#") || line.startsWith("roomN") || line.trim().isEmpty() || line.startsWith(",")) continue;
+                String[] parts = line.split(",", 4);
+                if (parts.length < 2) continue;
+                int roomNum = Integer.parseInt(parts[0].trim());
+                String roomName = parts[1].trim();
+                Room room = new Room(roomNum, roomName);
+                if (parts.length >= 4 && !parts[2].trim().isEmpty()) {
+                    String title = parts[2].trim();
+                    String artist = parts[3].trim();
+                    room.addArtwork(new Artwork(title, artist));
+                }
+                graph.addRoom(room);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,7 +45,7 @@ public class GalleryDataLoader {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.startsWith("#") || line.trim().isEmpty()) continue;
+                if (line.startsWith("#") || line.startsWith("roomN") || line.trim().isEmpty() || line.startsWith(",")) continue;
                 String[] parts = line.split(",");
                 int room1 = Integer.parseInt(parts[0]);
                 int room2 = Integer.parseInt(parts[1]);
@@ -48,23 +55,6 @@ public class GalleryDataLoader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
-            InputStream is = GalleryDataLoader.class.getModule().getResourceAsStream("org/example/data/artworks.csv");
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.startsWith("#") || line.trim().isEmpty()) continue;
-                String[] parts = line.split(",");
-                int roomNum = Integer.parseInt(parts[0]);
-                String title = parts[1];
-                String artist = parts[2];
-                GraphNodeAL<Room> node = graph.getNode(roomNum);
-                node.getData().addArtwork(new Artwork(title, artist));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
 
             return graph;
         }

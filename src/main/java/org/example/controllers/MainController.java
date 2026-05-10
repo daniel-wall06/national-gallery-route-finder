@@ -1,5 +1,6 @@
 package org.example.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ComboBox;
@@ -41,6 +42,8 @@ public class MainController {
 
     private GraphAL graph;
     private Map<Integer, double[]> roomCoordinates = new HashMap<>();
+    private int[] bfsStart = null;
+    private int[] bfsEnd = null;
 
     @FXML
     public void initialize() throws IOException {
@@ -201,64 +204,72 @@ public class MainController {
     private void runBFS() {
     }
     private void initRoomCoordinates() {
-        roomCoordinates.put(1, new double[]{401.0, 374.5});
-        roomCoordinates.put(2, new double[]{360.0, 354.5});
-        roomCoordinates.put(4, new double[]{325.0, 354.5});
-        roomCoordinates.put(5, new double[]{325.0, 306.5});
-        roomCoordinates.put(6, new double[]{288.0, 353.5});
-        roomCoordinates.put(7, new double[]{258.0, 375.5});
-        roomCoordinates.put(8, new double[]{225.0, 341.5});
-        roomCoordinates.put(9, new double[]{226.0, 269.5});
-        roomCoordinates.put(10, new double[]{282.0, 266.5});
-        roomCoordinates.put(11, new double[]{324.0, 268.5});
-        roomCoordinates.put(12, new double[]{364.0, 267.5});
-        roomCoordinates.put(14, new double[]{325.0, 233.5});
-        roomCoordinates.put(15, new double[]{239.0, 190.5});
-        roomCoordinates.put(16, new double[]{204.0, 204.5});
-        roomCoordinates.put(17, new double[]{203.0, 180.5});
-        roomCoordinates.put(18, new double[]{206.0, 160.5});
-        roomCoordinates.put(19, new double[]{238.0, 110.5});
-        roomCoordinates.put(20, new double[]{195.0, 139.5});
-        roomCoordinates.put(21, new double[]{196.0, 111.5});
-        roomCoordinates.put(22, new double[]{197.0, 78.5});
-        roomCoordinates.put(23, new double[]{283.0, 82.5});
-        roomCoordinates.put(24, new double[]{282.0, 110.5});
-        roomCoordinates.put(25, new double[]{282.0, 137.5});
-        roomCoordinates.put(26, new double[]{326.0, 137.5});
-        roomCoordinates.put(27, new double[]{267.0, 160.5});
-        roomCoordinates.put(28, new double[]{296.0, 159.5});
-        roomCoordinates.put(29, new double[]{324.0, 160.5});
-        roomCoordinates.put(30, new double[]{324.0, 188.5});
-        roomCoordinates.put(31, new double[]{431.0, 191.5});
-        roomCoordinates.put(32, new double[]{434.0, 152.5});
-        roomCoordinates.put(33, new double[]{540.0, 191.5});
-        roomCoordinates.put(34, new double[]{626.0, 190.5});
-        roomCoordinates.put(35, new double[]{625.0, 268.5});
-        roomCoordinates.put(36, new double[]{583.0, 267.5});
-        roomCoordinates.put(37, new double[]{539.0, 268.5});
-        roomCoordinates.put(38, new double[]{541.0, 226.5});
-        roomCoordinates.put(39, new double[]{497.0, 267.5});
-        roomCoordinates.put(40, new double[]{467.0, 267.5});
-        roomCoordinates.put(41, new double[]{541.0, 308.5});
-        roomCoordinates.put(42, new double[]{638.0, 339.5});
-        roomCoordinates.put(43, new double[]{607.0, 377.5});
-        roomCoordinates.put(44, new double[]{577.0, 364.5});
-        roomCoordinates.put(45, new double[]{540.0, 364.5});
-        roomCoordinates.put(46, new double[]{506.0, 364.5});
-        roomCoordinates.put(51, new double[]{464.0, 370.5});
-        roomCoordinates.put(52, new double[]{92.0, 255.5});
-        roomCoordinates.put(53, new double[]{91.0, 233.5});
-        roomCoordinates.put(54, new double[]{100.0, 293.5});
-        roomCoordinates.put(55, new double[]{100.0, 318.5});
-        roomCoordinates.put(56, new double[]{99.0, 346.5});
-        roomCoordinates.put(57, new double[]{99.0, 376.5});
-        roomCoordinates.put(58, new double[]{96.0, 401.5});
-        roomCoordinates.put(59, new double[]{59.0, 387.5});
-        roomCoordinates.put(60, new double[]{62.0, 347.5});
-        roomCoordinates.put(61, new double[]{63.0, 306.5});
-        roomCoordinates.put(62, new double[]{62.0, 253.5});
-        roomCoordinates.put(63, new double[]{25.0, 325.5});
-        roomCoordinates.put(66, new double[]{32.0, 396.5});
+        roomCoordinates.put(1, new double[]{397.0, 371.0});
+        roomCoordinates.put(2, new double[]{360.0, 351.0});
+        roomCoordinates.put(3, new double[]{326.0, 349.0});
+        roomCoordinates.put(4, new double[]{323.0, 306.0});
+        roomCoordinates.put(5, new double[]{286.0, 353.0});
+        roomCoordinates.put(6, new double[]{257.0, 371.0});
+        roomCoordinates.put(7, new double[]{224.0, 340.0});
+        roomCoordinates.put(8, new double[]{224.0, 267.0});
+        roomCoordinates.put(9, new double[]{283.0, 267.0});
+        roomCoordinates.put(10, new double[]{323.0, 269.0});
+        roomCoordinates.put(11, new double[]{364.0, 266.0});
+        roomCoordinates.put(12, new double[]{322.0, 232.0});
+        roomCoordinates.put(13, new double[]{240.0, 190.0});
+        roomCoordinates.put(14, new double[]{222.0, 171.0});
+        roomCoordinates.put(15, new double[]{202.0, 202.0});
+        roomCoordinates.put(16, new double[]{203.0, 180.0});
+        roomCoordinates.put(17, new double[]{207.0, 155.0});
+        roomCoordinates.put(18, new double[]{238.0, 108.0});
+        roomCoordinates.put(19, new double[]{199.0, 138.0});
+        roomCoordinates.put(20, new double[]{193.0, 107.0});
+        roomCoordinates.put(21, new double[]{191.0, 81.0});
+        roomCoordinates.put(22, new double[]{283.0, 77.0});
+        roomCoordinates.put(23, new double[]{280.0, 102.0});
+        roomCoordinates.put(24, new double[]{281.0, 133.0});
+        roomCoordinates.put(25, new double[]{324.0, 133.0});
+        roomCoordinates.put(26, new double[]{268.0, 158.0});
+        roomCoordinates.put(27, new double[]{294.0, 155.0});
+        roomCoordinates.put(28, new double[]{321.0, 158.0});
+        roomCoordinates.put(29, new double[]{321.0, 190.0});
+        roomCoordinates.put(30, new double[]{430.0, 191.0});
+        roomCoordinates.put(31, new double[]{432.0, 152.0});
+        roomCoordinates.put(32, new double[]{537.0, 190.0});
+        roomCoordinates.put(33, new double[]{620.0, 186.0});
+        roomCoordinates.put(34, new double[]{627.0, 269.0});
+        roomCoordinates.put(35, new double[]{583.0, 261.0});
+        roomCoordinates.put(36, new double[]{538.0, 267.0});
+        roomCoordinates.put(37, new double[]{542.0, 223.0});
+        roomCoordinates.put(38, new double[]{499.0, 262.0});
+        roomCoordinates.put(39, new double[]{466.0, 267.0});
+        roomCoordinates.put(40, new double[]{540.0, 307.0});
+        roomCoordinates.put(41, new double[]{639.0, 336.0});
+        roomCoordinates.put(42, new double[]{605.0, 373.0});
+        roomCoordinates.put(43, new double[]{579.0, 363.0});
+        roomCoordinates.put(44, new double[]{539.0, 365.0});
+        roomCoordinates.put(45, new double[]{506.0, 364.0});
+        roomCoordinates.put(46, new double[]{464.0, 374.0});
+        roomCoordinates.put(47, new double[]{91.0, 255.0});
+        roomCoordinates.put(48, new double[]{100.0, 289.0});
+        roomCoordinates.put(49, new double[]{103.0, 316.0});
+        roomCoordinates.put(50, new double[]{100.0, 348.0});
+        roomCoordinates.put(51, new double[]{100.0, 371.0});
+        roomCoordinates.put(52, new double[]{96.0, 398.0});
+        roomCoordinates.put(53, new double[]{61.0, 382.0});
+        roomCoordinates.put(54, new double[]{60.0, 348.0});
+        roomCoordinates.put(55, new double[]{60.0, 307.0});
+        roomCoordinates.put(56, new double[]{57.0, 248.0});
+        roomCoordinates.put(57, new double[]{26.0, 255.0});
+        roomCoordinates.put(58, new double[]{24.0, 289.0});
+        roomCoordinates.put(59, new double[]{25.0, 319.0});
+        roomCoordinates.put(60, new double[]{25.0, 352.0});
+        roomCoordinates.put(61, new double[]{25.0, 369.0});
+        roomCoordinates.put(62, new double[]{31.0, 393.0});
+        roomCoordinates.put(63, new double[]{431.0, 269.0});
+        roomCoordinates.put(64, new double[]{431.0, 269.0});
+        roomCoordinates.put(65, new double[]{373.0, 230.0});
+        roomCoordinates.put(66, new double[]{500.0, 304.0});
     }
     private void drawRoute(List<Room> route) {
         GraphicsContext gc = mapCanvas.getGraphicsContext2D();
@@ -285,5 +296,13 @@ public class MainController {
                 gc.fillOval(coords[0] - 5, coords[1] - 5, 10, 10);
             }
         }
+    }
+
+    @FXML
+    private void clearCanvas() {
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        bfsStart = null;
+        bfsEnd = null;
     }
 }

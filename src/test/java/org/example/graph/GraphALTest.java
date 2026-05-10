@@ -123,7 +123,7 @@ class GraphALTest {
         graphAL.connectRooms(1, 4, 300);
 
 
-        List<Room> route = graphAL.findMostInterestingRoute(1, 4, List.of("Van Gogh"));
+        List<Room> route = graphAL.findMostInterestingRoute(1, 4, List.of("Van Gogh"),new ArrayList<>());
         for (Room room : route) {
             System.out.println(room);
         }
