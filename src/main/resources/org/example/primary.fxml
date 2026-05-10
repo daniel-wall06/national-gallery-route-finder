@@ -25,9 +25,10 @@
          <TextField fx:id="artistsField" promptText="e.g. Vermeer, Monet"/>
          <Label text="Rooms to Avoid:"/>
          <TextField fx:id="avoidRoomsField" promptText="e.g. 5, 10, 15"/>
-         <Label text="Algorithms:"/>
+
          <Label text="Waypoints (via rooms):"/>
          <TextField fx:id="waypointsField" promptText="e.g. 5, 10, 15"/>
+         <Label text="Algorithms:"/>
          <Button fx:id="dfsButton" text="Find Multiple Routes (DFS)" maxWidth="Infinity" onAction="#runDFS"/>
          <Button fx:id="dijkstraButton" text="Shortest Route (Dijkstra)" maxWidth="Infinity" onAction="#runDijkstra"/>
          <Button fx:id="interestingButton" text="Most Interesting Route" maxWidth="Infinity" onAction="#runInteresting"/>

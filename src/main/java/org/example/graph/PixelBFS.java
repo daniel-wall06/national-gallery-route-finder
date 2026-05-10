@@ -26,7 +26,6 @@ public class PixelBFS {
             int cy = current[1];
 
             if (cx == destX && cy == destY) {
-                // reconstruct path
                 break;
             }
 
@@ -35,7 +34,7 @@ public class PixelBFS {
                 int ny = cy + dir[1];
 
                 if (nx >= 0 && nx < width && ny >= 0 && ny < height && !visited[ny][nx]) {
-                    // check if pixel is white (walkable)
+                    // check if pixel is white
                     javafx.scene.paint.Color color = pr.getColor(nx, ny);
                     if (color.getBrightness() > 0.5) {
                         visited[ny][nx] = true;
