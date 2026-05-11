@@ -337,7 +337,7 @@ public class MainController {
 
         if (route == null || route.size() < 2) return;
 
-        gc.setStroke(Color.RED);
+        gc.setStroke(Color.BLACK);
         gc.setLineWidth(3);
 
         for (int i = 0; i < route.size() - 1; i++) {
@@ -349,7 +349,7 @@ public class MainController {
         }
 
         // Draw circles at each room
-        gc.setFill(Color.RED);
+        gc.setFill(Color.BLACK);
         for (Room room : route) {
             double[] coords = roomCoordinates.get(room.getRoomNumber());
             if (coords != null) {
