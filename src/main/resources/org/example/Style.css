@@ -1,0 +1,14 @@
+.combo-box .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: #1e1e2e;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: #1e1e2e;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #3d3d6b;
+    -fx-text-fill: white;
+}
