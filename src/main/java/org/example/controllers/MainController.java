@@ -248,12 +248,13 @@ public class MainController {
         if (route == null) {
             resultsArea.setText("No route found.");
         } else {
-            StringBuilder sb = new StringBuilder("Shortest Route:\n");
+            StringBuilder sb = new StringBuilder("Most Interesting Route:\n");
             for (Room room : route) {
                 sb.append(room.toString()).append("\n");
             }
             resultsArea.setText(sb.toString());
         }
+        drawRoute(route);
 
     }
     @FXML
