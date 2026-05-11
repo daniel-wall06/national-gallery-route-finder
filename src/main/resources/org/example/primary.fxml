@@ -39,11 +39,11 @@
                   <ComboBox fx:id="destRoomCombo" maxWidth="Infinity"
                             style="-fx-background-color: #1e1e2e; -fx-text-fill: #e8e8f0; -fx-border-color: #3a3a5c; -fx-border-radius: 4; -fx-background-radius: 4;"/>
 
-                  <Label text="Waypoints (comma-separated room IDs)" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px; -fx-padding: 10 0 3 0;"/>
+                  <Label text="Waypoints" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px; -fx-padding: 10 0 3 0;"/>
                   <TextField fx:id="waypointsField" promptText="e.g. 5, 10, 15"
                              style="-fx-background-color: #1e1e2e; -fx-text-fill: #e8e8f0; -fx-prompt-text-fill: #55557a; -fx-border-color: #3a3a5c; -fx-border-radius: 4; -fx-background-radius: 4;"/>
 
-                  <Label text="Rooms to Avoid (comma-separated)" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px; -fx-padding: 10 0 3 0;"/>
+                  <Label text="Rooms to Avoid " style="-fx-text-fill: #aaaacc; -fx-font-size: 11px; -fx-padding: 10 0 3 0;"/>
                   <TextField fx:id="avoidRoomsField" promptText="e.g. 5, 10, 15"
                              style="-fx-background-color: #1e1e2e; -fx-text-fill: #e8e8f0; -fx-prompt-text-fill: #55557a; -fx-border-color: #3a3a5c; -fx-border-radius: 4; -fx-background-radius: 4;"/>
                </VBox>
