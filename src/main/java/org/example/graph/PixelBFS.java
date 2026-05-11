@@ -7,6 +7,19 @@ import java.util.*;
 
 public class PixelBFS {
 
+    /**
+     * Finds a path between two points on a black-and-white image using Breadth-First Search.
+     *
+     * White/light pixels are treated as walkable areas.
+     * Black/dark pixels are treated as walls or boundaries.
+     *
+     * @param bwImage The black-and-white image used as the map
+     * @param startX  The x-coordinate of the starting point
+     * @param startY  The y-coordinate of the starting point
+     * @param destX   The x-coordinate of the destination point
+     * @param destY   The y-coordinate of the destination point
+     * @return A list of pixel coordinates representing the path, or an empty list if no path is found
+     */
     public static List<int[]> findPath(Image bwImage, int startX, int startY, int destX, int destY) {
         PixelReader pr = bwImage.getPixelReader();
         int width = (int) bwImage.getWidth();
