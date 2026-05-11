@@ -142,7 +142,7 @@ public class GraphAL {
 
     /**
      * Finds the most interesting route between rooms using Dijkstra's algorithm
-     * Rooms that contain artwork by an artist in the provided list are given a discount to the distance
+     * Rooms that contain an artist provided becomes a waypoint and must be visited by the route.
      *
      * @param startRoom starting room number
      * @param destRoom  destination room number
@@ -150,59 +150,35 @@ public class GraphAL {
      * @return list of rooms on the most interesting route, or null if no path found
      */
     public List<Room> findMostInterestingRoute(int startRoom, int destRoom, List<String> artists, List<Integer> avoidRooms) {
-        GraphNodeAL<Room> startNode = nodes.get(startRoom);
-        GraphNodeAL<Room> destNode = nodes.get(destRoom);
-        if (startNode == null || destNode == null) return null;
-        List<GraphNodeAL<Room>> encountered = new ArrayList<>();
-        List<GraphNodeAL<Room>> unencountered = new ArrayList<>();
-        Map<GraphNodeAL<Room>, Integer> distances = new HashMap<>();
-        Map<GraphNodeAL<Room>, GraphNodeAL<Room>> prev = new HashMap<>();
-        for (GraphNodeAL<Room> node : nodes.values()) {
-            distances.put(node, Integer.MAX_VALUE);
+        // Find the interesting room closest to the midpoint of the route
+        List<Room> shortestRoute = findShortestRouteDijkstra(startRoom, destRoom, avoidRooms);
+        if (shortestRoute == null) return null;
+
+        // Find rooms with matching artists that aren't already on the shortest route
+        for (Room room : shortestRoute) {
+            for (String artist : artists) {
+                if (room.hasArtistWork(artist)) {
+                    // Artist already on shortest route - just return it
+                    return shortestRoute;
+                }
+            }
         }
-        distances.put(startNode, 0);
-        unencountered.add(startNode);
-        GraphNodeAL<Room> currentNode = startNode;
-        do {
-            currentNode = unencountered.remove(0);
-            encountered.add(currentNode);
-            if (currentNode.getData().equals(destNode.getData())) {
-                List<Room> path = new ArrayList<>();
-                GraphNodeAL<Room> traceNode = destNode;
-                while (traceNode != null) {
-                    path.add(0, traceNode.getData());
-                    traceNode = prev.get(traceNode);
-                }
-                return path;
 
-            }
-            for (int i = 0; i < currentNode.getAdjList().size(); i++) {
-                GraphNodeAL<Room> neighbour = currentNode.getAdjList().get(i);
-                if(!encountered.contains(neighbour) && !avoidRooms.contains(neighbour.getData().getRoomNumber())) {
-                    int newDist = distances.get(currentNode) + currentNode.getDistance().get(i);
-                    for (String artist : artists) {
-                        if (neighbour.getData().hasArtistWork(artist)) {
-                            newDist -= 50;
-                            break;
-
-                        }
-                    }
-                    newDist = Math.max(1, newDist);
-
-                    if (newDist < distances.get(neighbour)) {
-                        distances.put(neighbour, newDist);
-                        prev.put(neighbour, currentNode);
-                    }
-                    if (!unencountered.contains(neighbour)) {
-                        unencountered.add(neighbour);
-                    }
+        // Find closest interesting room and use as waypoint
+        Integer bestRoom = null;
+        for (GraphNodeAL<Room> node : nodes.values()) {
+            for (String artist : artists) {
+                if (node.getData().hasArtistWork(artist)) {
+                    bestRoom = node.getData().getRoomNumber();
+                    break;
                 }
             }
-            unencountered.sort(Comparator.comparingInt(distances::get));
-        } while (!unencountered.isEmpty());
+            if (bestRoom != null) break;
+        }
 
-        return null;
+        if (bestRoom == null) return shortestRoute;
 
+        return findShortestRouteWithWaypoints(startRoom, destRoom, List.of(bestRoom));
     }
 
     public List<Room> findShortestRouteWithWaypoints(int startRoom, int destRoom, List<Integer> waypoints) {
