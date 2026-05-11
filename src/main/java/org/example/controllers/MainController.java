@@ -1,6 +1,4 @@
 package org.example.controllers;
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ComboBox;
@@ -263,6 +261,8 @@ public class MainController {
         bfsEnd = null;
         resultsArea.setText("BFS mode: Click a start point on the map, then a destination point.");
     }
+
+    //Coords for each room
     private void initRoomCoordinates() {
         roomCoordinates.put(1, new double[]{397.0, 371.0});
         roomCoordinates.put(2, new double[]{360.0, 351.0});
