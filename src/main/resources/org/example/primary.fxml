@@ -3,14 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.canvas.*?>
-<?import javafx.geometry.Insets?>
-
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.example.controllers.MainController"
             style="-fx-background-color: #1e1e2e;">
-
-   <!-- MAP AREA -->
    <center>
       <StackPane fx:id="mapPane"
                  style="-fx-background-color: #13131f; -fx-border-color: #3a3a5c; -fx-border-width: 1;">
@@ -18,26 +14,19 @@
          <Canvas fx:id="mapCanvas" width="700" height="500"/>
       </StackPane>
    </center>
-
-   <!-- SIDE PANEL -->
    <right>
       <VBox spacing="0"
             prefWidth="260"
             style="-fx-background-color: #252535; -fx-border-color: #3a3a5c; -fx-border-width: 0 0 0 1;">
-
-         <!-- Title Bar -->
          <VBox style="-fx-background-color: #2e2e45; -fx-padding: 14 16 14 16;">
             <Label text="National Gallery"
                    style="-fx-text-fill: #e8e8f0; -fx-font-size: 15px; -fx-font-weight: bold;"/>
             <Label text="Route Finder"
                    style="-fx-text-fill: #8888aa; -fx-font-size: 11px;"/>
          </VBox>
-
-         <!-- Scrollable content -->
          <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
             <VBox spacing="0">
 
-               <!-- Route Setup -->
                <VBox style="-fx-padding: 14 16 8 16; -fx-background-color: #252535;">
                   <Label text="ROUTE SETUP"
                          style="-fx-text-fill: #6666aa; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 0 0 8 0;"/>
@@ -58,10 +47,7 @@
                   <TextField fx:id="avoidRoomsField" promptText="e.g. 5, 10, 15"
                              style="-fx-background-color: #1e1e2e; -fx-text-fill: #e8e8f0; -fx-prompt-text-fill: #55557a; -fx-border-color: #3a3a5c; -fx-border-radius: 4; -fx-background-radius: 4;"/>
                </VBox>
-
                <Separator style="-fx-background-color: #3a3a5c;"/>
-
-               <!-- Section: DFS Options -->
                <VBox style="-fx-padding: 14 16 8 16; -fx-background-color: #252535;">
                   <Label text="DFS OPTIONS"
                          style="-fx-text-fill: #6666aa; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 0 0 8 0;"/>
@@ -70,22 +56,16 @@
                   <TextField fx:id="maxRoutesField" promptText="e.g. 5"
                              style="-fx-background-color: #1e1e2e; -fx-text-fill: #e8e8f0; -fx-prompt-text-fill: #55557a; -fx-border-color: #3a3a5c; -fx-border-radius: 4; -fx-background-radius: 4;"/>
                </VBox>
-
                <Separator style="-fx-background-color: #3a3a5c;"/>
-
-               <!-- Section: Dijkstra Options -->
                <VBox style="-fx-padding: 14 16 8 16; -fx-background-color: #252535;">
                   <Label text="DIJKSTRA OPTIONS"
                          style="-fx-text-fill: #6666aa; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 0 0 8 0;"/>
 
-                  <Label text="Interested Artists (comma-separated)" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px; -fx-padding: 0 0 3 0;"/>
+                  <Label text="Interested Artists" style="-fx-text-fill: #aaaacc; -fx-font-size: 11px; -fx-padding: 0 0 3 0;"/>
                   <TextField fx:id="artistsField" promptText="e.g. Vermeer, Monet"
                              style="-fx-background-color: #1e1e2e; -fx-text-fill: #e8e8f0; -fx-prompt-text-fill: #55557a; -fx-border-color: #3a3a5c; -fx-border-radius: 4; -fx-background-radius: 4;"/>
                </VBox>
-
                <Separator style="-fx-background-color: #3a3a5c;"/>
-
-               <!-- Section: Actions ── -->
                <VBox spacing="8" style="-fx-padding: 14 16 14 16; -fx-background-color: #252535;">
                   <Label text="FIND ROUTE"
                          style="-fx-text-fill: #6666aa; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 0 0 4 0;"/>
@@ -110,10 +90,7 @@
                           onAction="#clearCanvas"
                           style="-fx-background-color: #4a2a2a; -fx-text-fill: #e8aaaa; -fx-font-size: 12px; -fx-padding: 8 12; -fx-background-radius: 5; -fx-cursor: hand;"/>
                </VBox>
-
                <Separator style="-fx-background-color: #3a3a5c;"/>
-
-               <!-- Section: Results -->
                <VBox style="-fx-padding: 14 16 14 16; -fx-background-color: #252535;">
                   <Label text="RESULTS"
                          style="-fx-text-fill: #6666aa; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 0 0 8 0;"/>
@@ -123,11 +100,8 @@
                             wrapText="true"
                             style="-fx-control-inner-background: #1e1e2e; -fx-text-fill: #c8c8ee; -fx-font-size: 11px; -fx-border-color: #3a3a5c; -fx-border-radius: 4; -fx-background-radius: 4;"/>
                </VBox>
-
             </VBox>
          </ScrollPane>
-
       </VBox>
    </right>
-
 </BorderPane>
