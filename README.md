@@ -30,12 +30,12 @@ A JavaFX application that models rooms, exhibits, doorways, and corridors in the
 ### Node Route Navigation & Waypoint Search
 Calculates paths through gallery nodes with support for custom waypoints and room avoidance filters.
 
-![Node Route Search](screenshots/Node_Route.png)
+![Node Route Search](screenshots/NodeSearch.jpeg)
 
 ### BFS Pixel-Based Search
 Executes pixel-level pathfinding over floorplan image overlays to calculate exact distance metrics.
 
-![BFS Pixel Path](screenshots/BFS_Pixel.png)
+![BFS Pixel Path](screenshots/BFSPixel.jpeg)
 
 ## Notes
 This project was developed as part of a Data Structures & Algorithms module (Semester 4 team project) and achieved 91%.
